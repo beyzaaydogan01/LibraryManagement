@@ -1,4 +1,5 @@
 ﻿
+using LibraryManagement.ConsoleUI.Models.Dtos;
 using LibraryManagement.ConsoleUI.Repository;
 using System.Threading.Channels;
 
@@ -31,5 +32,60 @@ public class BookService
             return;
         }
         Console.WriteLine(book);
+    }
+    public void Add(Book book)
+    {
+        Book created = bookRepository.Add(book);
+        Console.WriteLine($"Kitap eklendi: {created}");
+    }
+    public void GetById(int id)
+    {
+        Book? book = bookRepository.GetById(id);
+        if(book == null)
+        {
+            Console.WriteLine($"Aradığınız Id ye göre kitap bulunamadı {id}");
+            return;
+        }
+        Console.WriteLine(book);
+    }
+    public void Remove(int id)
+    {
+        Book? deletedBook = bookRepository.Remove(id);
+        if(deletedBook == null)
+        {
+            Console.WriteLine($"Böyle bir id numarası yok: {id}");
+            return;
+        }
+        Console.WriteLine(deletedBook);
+    }
+    public void GetAllBookOrderByTitle()
+    {
+        List<Book> books = bookRepository.GetAllBookOrderByTitle();
+        books.ForEach(book=> Console.WriteLine(book));
+    }
+    public void GetAllBooksOrderByTitleDescending()
+    {
+        List<Book> books = bookRepository.GetAllBooksOrderByTitleDescending();
+        books.ForEach(book => Console.WriteLine(book));
+    }
+    public void GetBookMaxPageSize()
+    {
+        Book book = bookRepository.GetBookMaxPageSize();
+        Console.WriteLine(book);
+    }
+    public void GetBookMinPageSize()
+    {
+        Book book = bookRepository.GetBookMinPageSize();
+        Console.WriteLine(book);
+    }
+    public void GetDetails()
+    {
+        List<BookDetailDto> bookDetail = bookRepository.GetDetails();
+        bookDetail.ForEach(b =>  Console.WriteLine(b));
+    }
+    public void GetDetailsV2()
+    {
+        List<BookDetailDto> bookDetail = bookRepository.GetDetailsV2();
+        bookDetail.ForEach(b => Console.WriteLine(b));
     }
 }

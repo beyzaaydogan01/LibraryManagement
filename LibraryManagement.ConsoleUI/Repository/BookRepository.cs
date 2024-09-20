@@ -1,4 +1,6 @@
 ﻿
+using LibraryManagement.ConsoleUI.Models.Dtos;
+
 namespace LibraryManagement.ConsoleUI.Repository;
 
 public class BookRepository
@@ -86,5 +88,86 @@ public class BookRepository
         Book book = books.SingleOrDefault(x => x.ISBN == isbn);
         return book;
     }
-
+    public Book Add(Book created)
+    {
+        books.Add(created);
+        return created;
+    }
+    public Book? GetById(int id)
+    {
+        Book book1 = null;
+        foreach(Book book in books){
+            if(book.Id == id)
+            {
+                book1 = book;
+            }
+        }
+        if(book1 == null)
+        {
+            return null;
+        }
+        return book1;
+    }
+    public Book? Remove(int id)
+    {
+        Book? deletedBook = GetById(id);
+        if(deletedBook is null)
+        {
+            return null;
+        }
+        books.Remove(deletedBook);
+        return deletedBook;
+    }
+    public List<Book> GetAllBookOrderByTitle()
+    {
+        List<Book> orderedBooks = books.OrderBy(b => b.Title).ToList();
+        return orderedBooks;
+    }
+    public List<Book> GetAllBooksOrderByTitleDescending()
+    {
+        List<Book> orderedBooks = books.OrderByDescending(b => b.Title).ToList();
+        return orderedBooks;
+    }
+    public Book GetBookMaxPageSize()
+    {
+        Book maxPageSize = books.OrderBy(b=> b.PageSize).LastOrDefault();
+        return maxPageSize;
+    }
+    public Book GetBookMinPageSize()
+    {
+        Book minPageSize = books.OrderByDescending(b => b.PageSize).LastOrDefault();
+        return minPageSize;
+    }
+    public List<BookDetailDto> GetDetails()
+    {
+        var result = from b in books
+                     join c in categories
+                     on b.CategoryId equals c.Id
+                     select new BookDetailDto(
+                         Id: b.Id,
+                         CategoryName: c.Name,
+                         Title: b.Title, 
+                         Description: b.Description,
+                         PageSize: b.PageSize,
+                         PublishDate: b.PublishDate,
+                         ISBN: b.ISBN);
+        return result.ToList();
+    }
+    public List<BookDetailDto> GetDetailsV2()
+    {
+        List<BookDetailDto> bookDetails = books.Join(categories,
+            b => b.CategoryId,
+            c => c.Id,
+            (book, category) => new BookDetailDto(
+                Id: book.Id,
+                CategoryName: category.Name,
+                Title: book.Title,
+                Description: book.Description,
+                PageSize: book.PageSize,
+                PublishDate: book.PublishDate,
+                ISBN: book.ISBN
+                )
+            ).ToList();
+        return bookDetails;
+    }
 }
