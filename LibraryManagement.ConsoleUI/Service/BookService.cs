@@ -88,4 +88,9 @@ public class BookService
         List<BookDetailDto> bookDetail = bookRepository.GetDetailsV2();
         bookDetail.ForEach(b => Console.WriteLine(b));
     }
+    public void GetAllBookAndAuthorDetails()
+    {
+        List<BookDetailDto> bookDetail = bookRepository.GetAllAuthorAndBookDetails();
+        bookDetail.ForEach(b => Console.WriteLine(b));
+    }
 }
