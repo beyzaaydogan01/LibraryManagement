@@ -1,7 +1,18 @@
-﻿namespace LibraryManagement.ConsoleUI;
+﻿using LibraryManagement.ConsoleUI.Models;
 
-public record Author(
-    int Id,
-    string Name,
-    string Surname
-    );
+namespace LibraryManagement.ConsoleUI;
+
+public sealed class Author : Entity
+{
+    public Author()
+    {
+
+    }
+    public Author(int id, string name, string surname) : base(id)
+    {
+        Name = name;
+        Surname = surname;
+    }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+}

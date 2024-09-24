@@ -63,9 +63,9 @@ public class BookService
         List<Book> books = bookRepository.GetAllBookOrderByTitle();
         books.ForEach(book=> Console.WriteLine(book));
     }
-    public void GetAllBooksOrderByTitleDescending()
+    public void GetAllBookOrderByDescendingTitle()
     {
-        List<Book> books = bookRepository.GetAllBooksOrderByTitleDescending();
+        List<Book> books = bookRepository.GetAllBookOrderByDescendingTitle();
         books.ForEach(book => Console.WriteLine(book));
     }
     public void GetBookMaxPageSize()
@@ -92,5 +92,32 @@ public class BookService
     {
         List<BookDetailDto> bookDetail = bookRepository.GetAllAuthorAndBookDetails();
         bookDetail.ForEach(b => Console.WriteLine(b));
+    }
+    public void GetAllDetailsByCategoryId(int categoryId)
+    {
+
+        List<BookDetailDto> details = bookRepository.GetAllDetailsByCategoryId(categoryId);
+        details.ForEach(x => Console.WriteLine(x));
+    }
+
+
+    private void BookIdBusinessRules(int id)
+    {
+        Book? getByIdBook = bookRepository.GetById(id);
+        if (getByIdBook != null)
+        {
+            Console.WriteLine($"Girmiş olduğunuz kitabın Id Alanı Benzersiz olmalıdır: {id}");
+            return;
+        }
+    }
+
+    private void BookISBNBusinessRules(string isbn)
+    {
+        Book? getBookByISBN = bookRepository.GetBookByISBN(isbn);
+        if (getBookByISBN is not null)
+        {
+            Console.WriteLine($"Girmiş olduğunuz kitabın ISBN Alanı Benzersiz olmalıdır: {isbn}");
+            return;
+        }
     }
 }
